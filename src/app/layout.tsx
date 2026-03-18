@@ -2,16 +2,22 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Inspectify | inspeções de Elite',
-  description: 'Gerador de laudos imobiliÃ¡rios offline-first.',
+  title: 'Inspectify | Relatorios de Elite',
+  description: 'Gerador de relatorios imobiliarios offline-first.',
   manifest: '/manifest.json',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0',
-  themeColor: '#0a0a0a',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: 'Inspectify',
   },
+};
+
+export const viewport = {
+  themeColor: '#0a0a0a',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
@@ -21,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className="dark">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased bg-black text-white">{children}</body>
     </html>
   );
 }

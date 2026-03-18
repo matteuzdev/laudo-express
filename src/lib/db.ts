@@ -1,7 +1,7 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
-interface LaudoDB extends DBSchema {
-  inspeções: {
+interface InspectDB extends DBSchema {
+  inspections: {
     key: string;
     value: {
       id: string;
@@ -17,55 +17,51 @@ interface LaudoDB extends DBSchema {
     key: string;
     value: {
       id: string;
-      InspeçãoId: string;
+      inspectId: string;
       blob: Blob;
       comentario?: string;
-      comodo: string; // Ex: Cozinha, Sala, Quarto 1
+      comodo: string;
       data: string;
     };
-    indexes: { 'by-Inspeção': string };
+    indexes: { 'by-inspect': string };
   };
 }
 
-const DATABASE_NAME = 'inspectify-db';
+const DATABASE_NAME = 'inspectify-db-v2';
 const DATABASE_VERSION = 1;
 
-export async function initDB(): Promise<IDBPDatabase<LaudoDB>> {
-  return openDB<LaudoDB>(DATABASE_NAME, DATABASE_VERSION, {
+export async function initDB(): Promise<IDBPDatabase<InspectDB>> {
+  return openDB<InspectDB>(DATABASE_NAME, DATABASE_VERSION, {
     upgrade(db) {
-      // Tabela de inspeções
-      const inspeçõestore = db.createObjectStore('inspeções', {
+      const inspectionStore = db.createObjectStore('inspections', {
         keyPath: 'id',
       });
-      inspeçõestore.createIndex('by-status', 'status');
+      inspectionStore.createIndex('by-status', 'status');
 
-      // Tabela de Fotos
       const fotoStore = db.createObjectStore('fotos', {
         keyPath: 'id',
       });
-      fotoStore.createIndex('by-Inspeção', 'InspeçãoId');
+      fotoStore.createIndex('by-inspect', 'inspectId');
     },
   });
 }
 
-// FunÃ§Ãµes de Acesso (Gatilhos do Bando)
-export async function saveInspeção(Inspeção: LaudoDB['inspeções']['value']) {
+export async function saveInspection(inspection: InspectDB['inspections']['value']) {
   const db = await initDB();
-  return db.put('inspeções', Inspeção);
+  return db.put('inspections', inspection);
 }
 
-export async function getinspeções() {
+export async function getInspections() {
   const db = await initDB();
-  return db.getAll('inspeções');
+  return db.getAll('inspections');
 }
 
-export async function saveFoto(foto: LaudoDB['fotos']['value']) {
+export async function saveFoto(foto: InspectDB['fotos']['value']) {
   const db = await initDB();
   return db.put('fotos', foto);
 }
 
-export async function getFotosByInspeção(InspeçãoId: string) {
+export async function getFotosByInspection(inspectId: string) {
   const db = await initDB();
-  return db.getAllFromIndex('fotos', 'by-Inspeção', InspeçãoId);
+  return db.getAllFromIndex('fotos', 'by-inspect', inspectId);
 }
-
