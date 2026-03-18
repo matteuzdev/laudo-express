@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --konig-primary: #1a1a1a;
+  --konig-secondary: #2a2a2a;
+  --konig-accent: #f5f5f5; /* Adaptativo: nada de verde limão! */
+  --konig-background: #ffffff;
+  --konig-foreground: #111111;
+}
+
+.dark {
+  --konig-primary: #f5f5f5;
+  --konig-secondary: #e5e5e5;
+  --konig-accent: #111111;
+  --konig-background: #0a0a0a;
+  --konig-foreground: #f9f9f9;
+}
+
+body {
+  color: var(--konig-foreground);
+  background: var(--konig-background);
+  font-family: 'Inter', sans-serif;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+}
