@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { Camera, Save, MapPin, ChevronLeft, Trash2, CheckCircle2 } from 'lucide-react';
 
-export default function Inspe��oAtiva() {
+export default function InspeçãoAtiva() {
   const [comodoAtual, setComodoAtual] = useState('Sala');
   const [fotos, setFotos] = useState<{id: number, blob: string, nota: string}[]>([]);
 
   const capturarFoto = () => {
-    // Simulação de captura de câmera (no PWA real abre a câmera do celular)
+    // SimulaÃ§Ã£o de captura de cÃ¢mera (no PWA real abre a cÃ¢mera do celular)
     const novaFoto = {
       id: Date.now(),
       blob: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=400',
@@ -25,7 +25,7 @@ export default function Inspe��oAtiva() {
           <ChevronLeft size={24} />
         </button>
         <div className="text-center">
-          <h1 className="text-lg font-bold">Inspe��o Ativa</h1>
+          <h1 className="text-lg font-bold">Inspeção Ativa</h1>
           <p className="text-xs text-gray-400">Rua das Flores, 123</p>
         </div>
         <button className="bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-green-700 transition-colors">
@@ -33,7 +33,7 @@ export default function Inspe��oAtiva() {
         </button>
       </header>
 
-      {/* Seleção de Cômodo */}
+      {/* SeleÃ§Ã£o de CÃ´modo */}
       <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
         {['Sala', 'Cozinha', 'Quarto 1', 'Quarto 2', 'Banheiro'].map((c) => (
           <button
@@ -48,7 +48,7 @@ export default function Inspe��oAtiva() {
         ))}
       </div>
 
-      {/* Área da Câmera */}
+      {/* Ãrea da CÃ¢mera */}
       <section className="space-y-4">
         <div className="relative aspect-video bg-black/40 rounded-3xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center space-y-4 group overflow-hidden">
           <button 
@@ -65,7 +65,7 @@ export default function Inspe��oAtiva() {
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {fotos.map((f) => (
           <div key={f.id} className="glass relative group overflow-hidden aspect-square border-white/10">
-            <img src={f.blob} alt="Inspe��o" className="w-full h-full object-cover rounded-xl" />
+            <img src={f.blob} alt="Inspeção" className="w-full h-full object-cover rounded-xl" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col p-2 justify-between">
               <button className="self-end p-2 bg-red-500 text-white rounded-lg">
                 <Trash2 size={16} />
@@ -79,11 +79,11 @@ export default function Inspe��oAtiva() {
         ))}
       </section>
 
-      {/* Geolocalização & Info */}
+      {/* GeolocalizaÃ§Ã£o & Info */}
       <footer className="glass p-6 border-white/10">
         <div className="flex items-center gap-4 text-gray-400 text-sm">
           <MapPin size={20} className="text-red-500" />
-          <p>Localização: -23.5505, -46.6333 (Precisão: 5m)</p>
+          <p>LocalizaÃ§Ã£o: -23.5505, -46.6333 (PrecisÃ£o: 5m)</p>
         </div>
       </footer>
     </main>

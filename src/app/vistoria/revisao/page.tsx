@@ -3,60 +3,60 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ChevronLeft, Send, Trash2, Edit3, Loader2, CheckCircle } from 'lucide-react';
-import { getFotosByInspeÁ„o, initDB } from '@/lib/db';
+import { getFotosByInspe√ß√£o, initDB } from '@/lib/db';
 
-export default function RevisaoInspeÁ„o() {
+export default function RevisaoInspe√ß√£o() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const InspeÁ„oId = searchParams.get('id');
+  const Inspe√ß√£oId = searchParams.get('id');
 
-  const [InspeÁ„o, setInspeÁ„o] = useState<any>(null);
+  const [Inspe√ß√£o, setInspe√ß√£o] = useState<any>(null);
   const [fotos, setFotos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-      if (!InspeÁ„oId) return;
+      if (!Inspe√ß√£oId) return;
       const db = await initDB();
-      const v = await db.get('inspeÁıes', InspeÁ„oId);
-      const f = await getFotosByInspeÁ„o(InspeÁ„oId);
-      setInspeÁ„o(v);
+      const v = await db.get('inspe√ß√µes', Inspe√ß√£oId);
+      const f = await getFotosByInspe√ß√£o(Inspe√ß√£oId);
+      setInspe√ß√£o(v);
       setFotos(f);
       setLoading(false);
     }
     loadData();
-  }, [InspeÁ„oId]);
+  }, [Inspe√ß√£oId]);
 
   const handleSync = async () => {
     setSyncing(true);
     
     // 1. Preparar os dados para o Backend Python
-    // Em um cen√°rio real, converter√≠amos Blobs para Base64 ou FormData
+    // Em um cen√É¬°rio real, converter√É¬≠amos Blobs para Base64 ou FormData
     const payload = {
-      InspeÁ„oId: InspeÁ„o.id,
-      endereco: InspeÁ„o.endereco,
-      cliente: InspeÁ„o.cliente,
+      Inspe√ß√£oId: Inspe√ß√£o.id,
+      endereco: Inspe√ß√£o.endereco,
+      cliente: Inspe√ß√£o.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
-        nota: f.comentario || 'Sem observa√ß√µes'
+        nota: f.comentario || 'Sem observa√É¬ß√É¬µes'
       }))
     };
 
     try {
       // 2. Chamada para o Motor Python (FastAPI)
-      const res = await fetch('http://localhost:8000/InspeÁ„o/sync', {
+      const res = await fetch('http://localhost:8000/Inspe√ß√£o/sync', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
       if (res.ok) {
-        alert("Laudo sincronizado com sucesso! O PDF est√° sendo gerado no servidor.");
+        alert("Laudo sincronizado com sucesso! O PDF est√É¬° sendo gerado no servidor.");
         router.push('/');
       }
     } catch (err) {
-      alert("Erro ao sincronizar. Verifique se o servidor Python est√° ligado.");
+      alert("Erro ao sincronizar. Verifique se o servidor Python est√É¬° ligado.");
     } finally {
       setSyncing(false);
     }
@@ -71,24 +71,24 @@ export default function RevisaoInspeÁ„o() {
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Revis√£o do Laudo</h1>
-          <p className="text-sm text-gray-500">{InspeÁ„o?.endereco}</p>
+          <h1 className="text-2xl font-bold tracking-tight">Revis√É¬£o do Laudo</h1>
+          <p className="text-sm text-gray-500">{Inspe√ß√£o?.endereco}</p>
         </div>
       </header>
 
-      {/* Grid de Fotos para Revis√£o */}
+      {/* Grid de Fotos para Revis√É¬£o */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {fotos.map((f) => (
           <div key={f.id} className="glass overflow-hidden border-white/5 flex flex-col">
             <div className="relative aspect-video">
-              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="InspeÁ„o" />
+              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Inspe√ß√£o" />
               <div className="absolute top-3 left-3 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-widest">
                 {f.comodo}
               </div>
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Adicione uma nota sobre este c√¥modo..."
+                placeholder="Adicione uma nota sobre este c√É¬¥modo..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[80px]"
@@ -104,7 +104,7 @@ export default function RevisaoInspeÁ„o() {
         ))}
       </section>
 
-      {/* Bot√£o Flutuante de Sincroniza√ß√£o */}
+      {/* Bot√É¬£o Flutuante de Sincroniza√É¬ß√É¬£o */}
       <footer className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent flex justify-center z-50">
         <button 
           onClick={handleSync}

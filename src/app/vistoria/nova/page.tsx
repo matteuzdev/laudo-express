@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MapPin, User, ArrowRight, ChevronLeft } from 'lucide-react';
-import { saveInspeção } from '@/lib/db';
+import { saveInspeÃ§Ã£o } from '@/lib/db';
 
-export default function NovaInspeção() {
+export default function NovaInspeÃ§Ã£o() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     endereco: '',
@@ -17,7 +17,7 @@ export default function NovaInspeção() {
     const id = Date.now().toString();
     
     // Salva no IndexedDB (Offline-First)
-    await saveInspeção({
+    await saveInspeÃ§Ã£o({
       id,
       endereco: formData.endereco,
       cliente: formData.cliente,
@@ -25,8 +25,8 @@ export default function NovaInspeção() {
       status: 'pendente'
     });
 
-    // Redireciona para a cÃ¢mera da Inspeção especÃ­fica
-    router.push(`/Inspeção/camera?id=${id}`);
+    // Redireciona para a cÃƒÂ¢mera da InspeÃ§Ã£o especÃƒÂ­fica
+    router.push(`/InspeÃ§Ã£o/camera?id=${id}`);
   };
 
   return (
@@ -36,18 +36,18 @@ export default function NovaInspeção() {
           <button onClick={() => router.back()} className="p-2 glass rounded-full">
             <ChevronLeft size={20} />
           </button>
-          <h1 className="text-2xl font-bold">Nova Inspeção</h1>
+          <h1 className="text-2xl font-bold">Nova InspeÃ§Ã£o</h1>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-400">EndereÃ§o do ImÃ³vel</label>
+              <label className="text-sm font-medium text-gray-400">EndereÃƒÂ§o do ImÃƒÂ³vel</label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                 <input
                   required
-                  placeholder="Rua, nÃºmero, bairro..."
+                  placeholder="Rua, nÃƒÂºmero, bairro..."
                   value={formData.endereco}
                   onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 focus:border-white outline-none transition-colors"
@@ -56,12 +56,12 @@ export default function NovaInspeção() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-400">Nome do Cliente / ImobiliÃ¡ria</label>
+              <label className="text-sm font-medium text-gray-400">Nome do Cliente / ImobiliÃƒÂ¡ria</label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                 <input
                   required
-                  placeholder="Ex: ImobiliÃ¡ria SertÃ£o"
+                  placeholder="Ex: ImobiliÃƒÂ¡ria SertÃƒÂ£o"
                   value={formData.cliente}
                   onChange={(e) => setFormData({ ...formData, cliente: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 focus:border-white outline-none transition-colors"
@@ -74,7 +74,7 @@ export default function NovaInspeção() {
             type="submit"
             className="w-full bg-white text-black py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform"
           >
-            Iniciar InspeÃ§Ã£o <ArrowRight size={20} />
+            Iniciar InspeÃƒÂ§ÃƒÂ£o <ArrowRight size={20} />
           </button>
         </form>
       </div>

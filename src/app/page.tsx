@@ -1,9 +1,9 @@
 import { Plus, ClipboardList, Clock, CheckCircle } from 'lucide-react';
 
 export default function Dashboard() {
-  const inspe��es = [
+  const inspeções = [
     { id: 1, endereco: 'Rua das Flores, 123', status: 'pendente', data: '18/03' },
-    { id: 2, endereco: 'Av. Sertão, 456', status: 'concluido', data: '17/03' },
+    { id: 2, endereco: 'Av. SertÃ£o, 456', status: 'concluido', data: '17/03' },
   ];
 
   return (
@@ -12,11 +12,11 @@ export default function Dashboard() {
       <header className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Inspectify</h1>
-          <p className="text-gray-500">Painel de inspe��es Imobiliárias</p>
+          <p className="text-gray-500">Painel de inspeções ImobiliÃ¡rias</p>
         </div>
         <button className="bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
           <Plus size={20} />
-          Nova Inspe��o
+          Nova Inspeção
         </button>
       </header>
 
@@ -32,24 +32,24 @@ export default function Dashboard() {
         <div className="glass p-6 space-y-2">
           <div className="flex items-center gap-2 text-green-600">
             <CheckCircle size={18} />
-            <span className="text-sm font-medium uppercase tracking-wider">Concluídas</span>
+            <span className="text-sm font-medium uppercase tracking-wider">ConcluÃ­das</span>
           </div>
           <p className="text-4xl font-bold">48</p>
         </div>
         <div className="glass p-6 space-y-2">
           <div className="flex items-center gap-2 text-blue-600">
             <ClipboardList size={18} />
-            <span className="text-sm font-medium uppercase tracking-wider">Total Mês</span>
+            <span className="text-sm font-medium uppercase tracking-wider">Total MÃªs</span>
           </div>
           <p className="text-4xl font-bold">60</p>
         </div>
       </div>
 
-      {/* Lista de inspe��es */}
+      {/* Lista de inspeções */}
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">inspe��es Recentes</h2>
+        <h2 className="text-xl font-semibold">inspeções Recentes</h2>
         <div className="space-y-2">
-          {inspe��es.map((v) => (
+          {inspeções.map((v) => (
             <div key={v.id} className="glass p-4 flex justify-between items-center hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors">
               <div className="flex gap-4 items-center">
                 <div className={`p-2 rounded-full ${v.status === 'concluido' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>

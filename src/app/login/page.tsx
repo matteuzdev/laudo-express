@@ -11,7 +11,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulação de envio de Magic Link
+    // SimulaÃ§Ã£o de envio de Magic Link
     setTimeout(() => {
       setLoading(false);
       setSent(true);
@@ -69,7 +69,7 @@ export default function LoginPage() {
         )}
 
         <p className="text-center text-xs text-gray-500">
-          Ao entrar, você concorda com nossos Termos de Uso e Política de Privacidade.
+          Ao entrar, vocÃª concorda com nossos Termos de Uso e PolÃ­tica de Privacidade.
         </p>
       </div>
     </main>
