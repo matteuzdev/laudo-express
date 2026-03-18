@@ -1,6 +1,6 @@
 {
-  "name": "Laudo Express",
-  "short_name": "LaudoEx",
+  "name": "Inspectify",
+  "short_name": "Inspectify",
   "description": "Gerador de laudos imobiliários offline-first de elite.",
   "start_url": "/",
   "display": "standalone",

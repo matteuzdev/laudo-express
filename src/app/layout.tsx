@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Laudo Express | Vistorias de Elite',
+  title: 'Inspectify | inspeções de Elite',
   description: 'Gerador de laudos imobiliÃ¡rios offline-first.',
   manifest: '/manifest.json',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Laudo Express',
+    title: 'Inspectify',
   },
 };
 

@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MapPin, User, ArrowRight, ChevronLeft } from 'lucide-react';
-import { saveVistoria } from '@/lib/db';
+import { saveInspeção } from '@/lib/db';
 
-export default function NovaVistoria() {
+export default function NovaInspeção() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     endereco: '',
@@ -17,7 +17,7 @@ export default function NovaVistoria() {
     const id = Date.now().toString();
     
     // Salva no IndexedDB (Offline-First)
-    await saveVistoria({
+    await saveInspeção({
       id,
       endereco: formData.endereco,
       cliente: formData.cliente,
@@ -25,8 +25,8 @@ export default function NovaVistoria() {
       status: 'pendente'
     });
 
-    // Redireciona para a cÃ¢mera da vistoria especÃ­fica
-    router.push(`/vistoria/camera?id=${id}`);
+    // Redireciona para a cÃ¢mera da Inspeção especÃ­fica
+    router.push(`/Inspeção/camera?id=${id}`);
   };
 
   return (
@@ -36,7 +36,7 @@ export default function NovaVistoria() {
           <button onClick={() => router.back()} className="p-2 glass rounded-full">
             <ChevronLeft size={20} />
           </button>
-          <h1 className="text-2xl font-bold">Nova Vistoria</h1>
+          <h1 className="text-2xl font-bold">Nova Inspeção</h1>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6">

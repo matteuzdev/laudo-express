@@ -53,7 +53,7 @@ export default function VerifyTokenPage() {
           <>
             <CheckCircle2 className="mx-auto text-green-500 animate-bounce" size={48} />
             <h1 className="text-2xl font-bold text-green-500">Acesso Concedido!</h1>
-            <p className="text-gray-500">Bem-vindo ao Laudo Express. Redirecionando...</p>
+            <p className="text-gray-500">Bem-vindo ao Inspectify. Redirecionando...</p>
           </>
         )}
 

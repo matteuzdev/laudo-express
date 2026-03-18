@@ -16,7 +16,7 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     plan: str = Field(default="starter")
 
-class Vistoria(SQLModel, table=True):
+class Inspeção(SQLModel, table=True):
     id: str = Field(primary_key=True)
     user_id: int = Field(foreign_key="user.id")
     endereco: str
@@ -26,7 +26,7 @@ class Vistoria(SQLModel, table=True):
 
 class Foto(SQLModel, table=True):
     id: str = Field(primary_key=True)
-    vistoria_id: str = Field(foreign_key="vistoria.id")
+    Inspeção_id: str = Field(foreign_key="Inspeção.id")
     comodo: str
     nota: Optional[str] = None
     data_criacao: datetime = Field(default_factory=datetime.utcnow)
@@ -37,3 +37,4 @@ def create_db_and_tables():
 
 if __name__ == "__main__":
     create_db_and_tables()
+

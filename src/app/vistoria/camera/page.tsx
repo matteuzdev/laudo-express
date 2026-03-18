@@ -8,7 +8,7 @@ import { saveFoto } from '@/lib/db';
 export default function CameraPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const vistoriaId = searchParams.get('id');
+  const InspeçãoId = searchParams.get('id');
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -34,7 +34,7 @@ export default function CameraPage() {
   }, []);
 
   const takePhoto = async () => {
-    if (!videoRef.current || !vistoriaId) return;
+    if (!videoRef.current || !InspeçãoId) return;
     
     setCapturing(true);
     const canvas = document.createElement('canvas');
@@ -47,7 +47,7 @@ export default function CameraPage() {
       if (blob) {
         await saveFoto({
           id: Date.now().toString(),
-          vistoriaId,
+          InspeçãoId,
           blob,
           comodo,
           data: new Date().toISOString()
@@ -93,7 +93,7 @@ export default function CameraPage() {
 
       {/* Controles Inferiores */}
       <footer className="p-8 flex justify-around items-center bg-gradient-to-t from-black/80 to-transparent">
-        <button onClick={() => router.push(`/vistoria/revisao?id=${vistoriaId}`)} className="p-4 glass rounded-full">
+        <button onClick={() => router.push(`/Inspeção/revisao?id=${InspeçãoId}`)} className="p-4 glass rounded-full">
           <X size={24} />
         </button>
         
@@ -105,7 +105,7 @@ export default function CameraPage() {
           {capturing ? <Loader2 className="animate-spin text-black" size={32} /> : <div className="w-16 h-16 border-4 border-black rounded-full" />}
         </button>
 
-        <button onClick={() => router.push(`/vistoria/revisao?id=${vistoriaId}`)} className="p-4 bg-green-500 rounded-full">
+        <button onClick={() => router.push(`/Inspeção/revisao?id=${InspeçãoId}`)} className="p-4 bg-green-500 rounded-full">
           <Check size={24} />
         </button>
       </footer>

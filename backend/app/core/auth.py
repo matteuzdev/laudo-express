@@ -22,3 +22,4 @@ def verify_magic_link_token(token: str):
         return email
     except JWTError:
         return None
+

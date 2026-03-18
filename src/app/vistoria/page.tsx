@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Camera, Save, MapPin, ChevronLeft, Trash2, CheckCircle2 } from 'lucide-react';
 
-export default function VistoriaAtiva() {
+export default function InspeçãoAtiva() {
   const [comodoAtual, setComodoAtual] = useState('Sala');
   const [fotos, setFotos] = useState<{id: number, blob: string, nota: string}[]>([]);
 
@@ -25,7 +25,7 @@ export default function VistoriaAtiva() {
           <ChevronLeft size={24} />
         </button>
         <div className="text-center">
-          <h1 className="text-lg font-bold">Vistoria Ativa</h1>
+          <h1 className="text-lg font-bold">Inspeção Ativa</h1>
           <p className="text-xs text-gray-400">Rua das Flores, 123</p>
         </div>
         <button className="bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-green-700 transition-colors">
@@ -65,7 +65,7 @@ export default function VistoriaAtiva() {
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {fotos.map((f) => (
           <div key={f.id} className="glass relative group overflow-hidden aspect-square border-white/10">
-            <img src={f.blob} alt="Vistoria" className="w-full h-full object-cover rounded-xl" />
+            <img src={f.blob} alt="Inspeção" className="w-full h-full object-cover rounded-xl" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col p-2 justify-between">
               <button className="self-end p-2 bg-red-500 text-white rounded-lg">
                 <Trash2 size={16} />

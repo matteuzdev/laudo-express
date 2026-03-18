@@ -1,7 +1,7 @@
 import { Plus, ClipboardList, Clock, CheckCircle } from 'lucide-react';
 
 export default function Dashboard() {
-  const vistorias = [
+  const inspeções = [
     { id: 1, endereco: 'Rua das Flores, 123', status: 'pendente', data: '18/03' },
     { id: 2, endereco: 'Av. SertÃ£o, 456', status: 'concluido', data: '17/03' },
   ];
@@ -11,12 +11,12 @@ export default function Dashboard() {
       {/* Header */}
       <header className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Laudo Express</h1>
-          <p className="text-gray-500">Painel de Vistorias ImobiliÃ¡rias</p>
+          <h1 className="text-3xl font-bold tracking-tight">Inspectify</h1>
+          <p className="text-gray-500">Painel de inspeções ImobiliÃ¡rias</p>
         </div>
         <button className="bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
           <Plus size={20} />
-          Nova Vistoria
+          Nova Inspeção
         </button>
       </header>
 
@@ -45,11 +45,11 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Lista de Vistorias */}
+      {/* Lista de inspeções */}
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Vistorias Recentes</h2>
+        <h2 className="text-xl font-semibold">inspeções Recentes</h2>
         <div className="space-y-2">
-          {vistorias.map((v) => (
+          {inspeções.map((v) => (
             <div key={v.id} className="glass p-4 flex justify-between items-center hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors">
               <div className="flex gap-4 items-center">
                 <div className={`p-2 rounded-full ${v.status === 'concluido' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>

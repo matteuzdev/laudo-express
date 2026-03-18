@@ -5,7 +5,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Tabl
 from datetime import datetime
 import os
 
-class LaudoGenerator:
+class InspectGenerator:
     def __init__(self, output_path: str):
         self.output_path = output_path
         self.styles = getSampleStyleSheet()
@@ -17,26 +17,26 @@ class LaudoGenerator:
             spaceAfter=12
         )
 
-    def generate(self, dados_vistoria: dict, fotos: list):
+    def generate(self, dados_InspeÁ„o: dict, fotos: list):
         """
-        Gera um PDF profissional de vistoria.
-        dados_vistoria: {endereco, cliente, data, inspetor}
+        Gera um PDF profissional de InspeÁ„o.
+        dados_InspeÁ„o: {endereco, cliente, data, inspetor}
         fotos: [{path, comodo, nota}]
         """
         doc = SimpleDocTemplate(self.output_path, pagesize=A4)
         story = []
 
         # 1. Cabe√ßalho de Elite
-        titulo = Paragraph(f"<b>LAUDO DE VISTORIA IMOBILI√ÅRIA</b>", self.styles['Title'])
+        titulo = Paragraph(f"<b>RelatÛrio de InspeÁ„o IMOBILI√ÅRIA</b>", self.styles['Title'])
         story.append(titulo)
         story.append(Spacer(1, 12))
 
         # 2. Informa√ß√µes da Propriedade
         info_data = [
-            [f"Im√≥vel:", dados_vistoria['endereco']],
-            [f"Cliente:", dados_vistoria['cliente']],
-            [f"Data:", dados_vistoria['data']],
-            [f"Inspetor:", dados_vistoria['inspetor']]
+            [f"Im√≥vel:", dados_InspeÁ„o['endereco']],
+            [f"Cliente:", dados_InspeÁ„o['cliente']],
+            [f"Data:", dados_InspeÁ„o['data']],
+            [f"Inspetor:", dados_InspeÁ„o['inspetor']]
         ]
         t = Table(info_data, colWidths=[100, 350])
         t.setStyle(TableStyle([
@@ -71,7 +71,7 @@ class LaudoGenerator:
 
         # 4. Rodap√©
         story.append(Spacer(1, 24))
-        footer = Paragraph(f"Gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')} por Laudo Express.", self.styles['Italic'])
+        footer = Paragraph(f"Gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')} por Inspectify.", self.styles['Italic'])
         story.append(footer)
 
         doc.build(story)
@@ -79,7 +79,7 @@ class LaudoGenerator:
 
 # Exemplo de uso r√°pido para teste do bando
 if __name__ == "__main__":
-    generator = LaudoGenerator("exemplo_laudo.pdf")
+    generator = InspectGenerator("exemplo_laudo.pdf")
     dados = {
         "endereco": "Rua das Flores, 123 - Centro",
         "cliente": "Imobili√°ria Sert√£o Verde",
@@ -92,3 +92,4 @@ if __name__ == "__main__":
         {"path": "print2.png", "comodo": "Cozinha", "nota": "Pia em perfeito estado, sem vazamentos."}
     ]
     # generator.generate(dados, fotos) # Descomentar ap√≥s ter fotos reais no diret√≥rio
+

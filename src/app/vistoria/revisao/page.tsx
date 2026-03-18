@@ -3,30 +3,30 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ChevronLeft, Send, Trash2, Edit3, Loader2, CheckCircle } from 'lucide-react';
-import { getFotosByVistoria, initDB } from '@/lib/db';
+import { getFotosByInspeção, initDB } from '@/lib/db';
 
-export default function RevisaoVistoria() {
+export default function RevisaoInspeção() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const vistoriaId = searchParams.get('id');
+  const InspeçãoId = searchParams.get('id');
 
-  const [vistoria, setVistoria] = useState<any>(null);
+  const [Inspeção, setInspeção] = useState<any>(null);
   const [fotos, setFotos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-      if (!vistoriaId) return;
+      if (!InspeçãoId) return;
       const db = await initDB();
-      const v = await db.get('vistorias', vistoriaId);
-      const f = await getFotosByVistoria(vistoriaId);
-      setVistoria(v);
+      const v = await db.get('inspeções', InspeçãoId);
+      const f = await getFotosByInspeção(InspeçãoId);
+      setInspeção(v);
       setFotos(f);
       setLoading(false);
     }
     loadData();
-  }, [vistoriaId]);
+  }, [InspeçãoId]);
 
   const handleSync = async () => {
     setSyncing(true);
@@ -34,9 +34,9 @@ export default function RevisaoVistoria() {
     // 1. Preparar os dados para o Backend Python
     // Em um cenÃ¡rio real, converterÃ­amos Blobs para Base64 ou FormData
     const payload = {
-      vistoriaId: vistoria.id,
-      endereco: vistoria.endereco,
-      cliente: vistoria.cliente,
+      InspeçãoId: Inspeção.id,
+      endereco: Inspeção.endereco,
+      cliente: Inspeção.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
         nota: f.comentario || 'Sem observaÃ§Ãµes'
@@ -45,7 +45,7 @@ export default function RevisaoVistoria() {
 
     try {
       // 2. Chamada para o Motor Python (FastAPI)
-      const res = await fetch('http://localhost:8000/vistoria/sync', {
+      const res = await fetch('http://localhost:8000/Inspeção/sync', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -72,7 +72,7 @@ export default function RevisaoVistoria() {
         </button>
         <div>
           <h1 className="text-2xl font-bold tracking-tight">RevisÃ£o do Laudo</h1>
-          <p className="text-sm text-gray-500">{vistoria?.endereco}</p>
+          <p className="text-sm text-gray-500">{Inspeção?.endereco}</p>
         </div>
       </header>
 
@@ -81,7 +81,7 @@ export default function RevisaoVistoria() {
         {fotos.map((f) => (
           <div key={f.id} className="glass overflow-hidden border-white/5 flex flex-col">
             <div className="relative aspect-video">
-              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Vistoria" />
+              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Inspeção" />
               <div className="absolute top-3 left-3 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-widest">
                 {f.comodo}
               </div>

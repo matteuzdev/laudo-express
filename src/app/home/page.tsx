@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 export default function LandingPage() {
   const planos = [
     { nome: 'Starter', preco: '49', desc: 'Para quem está começando.', itens: ['Até 10 laudos/mês', 'Armazenamento offline', 'Exportação em PDF'] },
-    { nome: 'Pro', preco: '97', desc: 'O favorito dos vitoriadores.', itens: ['Laudos ilimitados', 'Fotos em alta resolução', 'Suporte prioritário', 'Personalização de logo'], popular: true },
+    { nome: 'Pro', preco: '97', desc: 'O favorito dos inspetores.', itens: ['Laudos ilimitados', 'Fotos em alta resolução', 'Suporte prioritário', 'Personalização de logo'], popular: true },
     { nome: 'Empire', preco: '197', desc: 'Para imobiliárias e agências.', itens: ['Equipes de até 5 pessoas', 'Multilogin', 'API de integração', 'Dashboard de analytics'] },
   ];
 
@@ -24,14 +24,14 @@ export default function LandingPage() {
           className="space-y-6 z-10"
         >
           <span className="px-4 py-1 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest bg-white/5 text-gray-400">
-            Micro-SaaS de Elite para Vistoriadores
+            Micro-SaaS de Elite para Inspe��odores
           </span>
           <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter max-w-5xl leading-tight">
             Recupere suas noites. <br/>
             <span className="text-gray-500 italic">Laudos em tempo real.</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium">
-            O Laudo Express automatiza o trabalho sujo. Gere laudos profissionais de imóveis enquanto caminha pelo imóvel. Mesmo sem Wi-Fi.
+            O Inspectify automatiza o trabalho sujo. Gere laudos profissionais de imóveis enquanto caminha pelo imóvel. Mesmo sem Wi-Fi.
           </p>
         </motion.div>
 
@@ -50,7 +50,7 @@ export default function LandingPage() {
             <div className="flex -space-x-2">
               {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-zinc-800 border-2 border-black" />)}
             </div>
-            <p>+500 vitoriadores já economizam tempo.</p>
+            <p>+500 inspetores já economizam tempo.</p>
           </div>
         </motion.div>
       </section>
@@ -119,7 +119,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto space-y-20">
           <div className="text-center space-y-4">
             <h2 className="text-5xl font-bold tracking-tight">Pronto para escalar?</h2>
-            <p className="text-gray-500 text-xl">Escolha o plano que melhor se adapta ao seu volume de vistorias.</p>
+            <p className="text-gray-500 text-xl">Escolha o plano que melhor se adapta ao seu volume de inspe��es.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {planos.map((p) => (
@@ -155,7 +155,7 @@ export default function LandingPage() {
       {/* 5. FOOTER */}
       <footer className="py-20 p-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="space-y-2 text-center md:text-left">
-          <h4 className="text-xl font-bold italic tracking-tighter">LAUDO EXPRESS</h4>
+          <h4 className="text-xl font-bold italic tracking-tighter">Inspectify</h4>
           <p className="text-gray-500 text-xs tracking-widest uppercase">Tecnologia de Elite para Imobiliárias</p>
         </div>
         <div className="flex gap-8 text-sm text-gray-500 font-medium">

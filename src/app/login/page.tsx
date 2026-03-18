@@ -56,7 +56,7 @@ export default function LoginPage() {
               <h2 className="text-xl font-bold">Verifique seu e-mail</h2>
               <p className="text-sm text-gray-500">
                 Enviamos um link de acesso para <strong>{email}</strong>. 
-                Clique no link para entrar no Laudo Express.
+                Clique no link para entrar no Inspectify.
               </p>
             </div>
             <button 
