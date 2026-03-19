@@ -7,8 +7,8 @@ import { Logo } from '@/components/Logo';
 
 export default function LandingPage() {
   const plans = [
-    { nome: 'Starter', preco: '49', desc: 'Para quem esta comecando.', itens: ['Ate 10 inspeções/mes', 'Armazenamento offline', 'Exportacao em PDF'] },
-    { nome: 'Pro', preco: '97', desc: 'O favorito dos inspetores.', itens: ['Inspeções ilimitadas', 'Fotos em alta resolucao', 'Suporte prioritario', 'Personalizacao de logo'], popular: true },
+    { nome: 'Starter', preco: '49', desc: 'Para quem esta comecando.', itens: ['Ate 10 inspeÃ§Ãµes/mes', 'Armazenamento offline', 'Exportacao em PDF'] },
+    { nome: 'Pro', preco: '97', desc: 'O favorito dos inspetores.', itens: ['InspeÃ§Ãµes ilimitadas', 'Fotos em alta resolucao', 'Suporte prioritario', 'Personalizacao de logo'], popular: true },
     { nome: 'Empire', preco: '197', desc: 'Para imobiliarias e agencias.', itens: ['Equipes de ate 5 pessoas', 'Multilogin', 'API de integracao', 'Dashboard de analytics'] },
   ];
 
@@ -176,7 +176,7 @@ export default function LandingPage() {
             <p className="text-[10px] tracking-[0.5em] uppercase text-zinc-600 font-black">Imperio Konig</p>
           </div>
         </div>
-        <p className="text-zinc-700 font-black text-xs uppercase tracking-[0.3em]">© 2026 Todos os Direitos Reservados</p>
+        <p className="text-zinc-700 font-black text-xs uppercase tracking-[0.3em]">Â© 2026 Todos os Direitos Reservados</p>
       </footer>
     </div>
   );

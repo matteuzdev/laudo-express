@@ -17,12 +17,12 @@ export default function LoginPage() {
     setLoading(true);
     
     try {
-      // SIMULAÇÃO DE MAGIC LINK E LOGIN PARA TESTES
-      // Em produção, isso bateria no FastAPI e enviaria um e-mail real.
+      // SIMULAÃ‡ÃƒO DE MAGIC LINK E LOGIN PARA TESTES
+      // Em produÃ§Ã£o, isso bateria no FastAPI e enviaria um e-mail real.
       setTimeout(() => {
         setLoading(false);
         setSent(true);
-        // Grava o cookie de segurança para o Middleware liberar o acesso
+        // Grava o cookie de seguranÃ§a para o Middleware liberar o acesso
         document.cookie = `user_email=${email}; path=/; max-age=86400`; // Expira em 1 dia
       }, 1500);
     } catch (err) {
@@ -71,7 +71,7 @@ export default function LoginPage() {
               {!loading && <ArrowRight size={20} />}
             </button>
             <p className="text-center text-xs text-zinc-600 font-medium flex items-center justify-center gap-1">
-              <ShieldCheck size={14} /> Conexão criptografada de ponta a ponta
+              <ShieldCheck size={14} /> ConexÃ£o criptografada de ponta a ponta
             </p>
           </form>
         ) : (
@@ -88,7 +88,7 @@ export default function LoginPage() {
             </div>
             <div className="space-y-4 pt-6 border-t border-white/10">
               <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-black">Ambiente de Teste</p>
-              <p className="text-xs text-zinc-400">Sua sessão foi autenticada automaticamente no navegador.</p>
+              <p className="text-xs text-zinc-400">Sua sessÃ£o foi autenticada automaticamente no navegador.</p>
               <button 
                 onClick={() => router.push('/dashboard')}
                 className="w-full bg-white text-black py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-zinc-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)]"

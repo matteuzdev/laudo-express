@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ChevronLeft, Trash2, Loader2, CheckCircle } from 'lucide-react';
-import { getFotosByInspection, initDB } from '@/lib/db';
+import { getFotosByInspection, initDB, deleteFoto } from '@/lib/db';
 
 function RevisaoContent() {
   const searchParams = useSearchParams();
@@ -28,6 +28,13 @@ function RevisaoContent() {
     loadData();
   }, [id]);
 
+  const handleDelete = async (fotoId: string) => {
+    if (confirm("Deseja realmente excluir esta foto?")) {
+      await deleteFoto(fotoId);
+      setFotos(fotos.filter(f => f.id !== fotoId));
+    }
+  };
+
   const handleSync = async () => {
     setSyncing(true);
     const payload = {
@@ -36,23 +43,27 @@ function RevisaoContent() {
       cliente: vistoria.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
-        nota: f.comentario || 'Sem observacoes'
+        nota: f.comentario || 'Sem observaÃ§Ãµes'
       }))
     };
 
     try {
-      const res = await fetch('http://localhost:8000/vistoria/sync', {
+      // URL DINÃ‚MICA: Usa a variÃ¡vel de ambiente se existir, senÃ£o usa localhost
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${apiUrl}/vistoria/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
       if (res.ok) {
-        alert("Relatorio sincronizado com sucesso!");
+        alert("RelatÃ³rio sincronizado com sucesso!");
         router.push('/dashboard');
+      } else {
+        alert("Erro no servidor ao gerar o relatÃ³rio.");
       }
     } catch (err) {
-      alert("Erro ao sincronizar. Verifique o servidor Python.");
+      alert("Erro de conexÃ£o. Verifique se o servidor estÃ¡ online.");
     } finally {
       setSyncing(false);
     }
@@ -67,7 +78,7 @@ function RevisaoContent() {
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight uppercase italic">Revisao de Inspecao</h1>
+          <h1 className="text-2xl font-bold tracking-tight uppercase">RevisÃ£o de InspeÃ§Ã£o</h1>
           <p className="text-sm text-gray-500 font-mono">{vistoria?.endereco}</p>
         </div>
       </header>
@@ -76,21 +87,24 @@ function RevisaoContent() {
         {fotos.map((f) => (
           <div key={f.id} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden flex flex-col group">
             <div className="relative aspect-video">
-              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Inspecao" />
+              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="InspeÃ§Ã£o" />
               <div className="absolute top-3 left-3 px-3 py-1 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest">
                 {f.comodo}
               </div>
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Adicione observacoes tecnicas..."
+                placeholder="Adicione observaÃ§Ãµes..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px]"
               />
               <div className="flex justify-between items-center pt-2">
                 <span className="text-[10px] text-gray-600 uppercase font-bold tracking-tighter">REF: {f.id}</span>
-                <button className="text-red-500/50 p-2 hover:text-red-500 transition-colors">
+                <button 
+                  onClick={() => handleDelete(f.id)}
+                  className="text-red-500/50 p-2 hover:text-red-500 transition-colors"
+                >
                   <Trash2 size={18} />
                 </button>
               </div>
@@ -106,7 +120,7 @@ function RevisaoContent() {
           className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'SINCRONIZANDO...' : 'GERAR RELATORIO ELITE'}
+          {syncing ? 'Sincronizando...' : 'Gerar RelatÃ³rio'}
         </button>
       </footer>
     </main>
@@ -115,7 +129,7 @@ function RevisaoContent() {
 
 export default function RevisaoPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">CARREGANDO DADOS...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">Carregando dados...</div>}>
       <RevisaoContent />
     </Suspense>
   );

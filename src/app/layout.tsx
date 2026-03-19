@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Inspectify | Relatorios de Elite',
-  description: 'Gerador de relatorios imobiliarios offline-first.',
+  title: 'Inspectify | RelatÃ³rios de InspeÃ§Ã£o',
+  description: 'Sistema profissional de vistorias imobiliÃ¡rias offline-first.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -27,6 +27,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className="dark">
+      <head>
+        <meta charSet="utf-8" />
+      </head>
       <body className="antialiased bg-black text-white">{children}</body>
     </html>
   );

@@ -27,21 +27,20 @@ interface InspectDB extends DBSchema {
   };
 }
 
-const DATABASE_NAME = 'inspectify-db-v2';
+const DATABASE_NAME = 'inspectify-db-v3';
 const DATABASE_VERSION = 1;
 
 export async function initDB(): Promise<IDBPDatabase<InspectDB>> {
   return openDB<InspectDB>(DATABASE_NAME, DATABASE_VERSION, {
     upgrade(db) {
-      const inspectionStore = db.createObjectStore('inspections', {
-        keyPath: 'id',
-      });
-      inspectionStore.createIndex('by-status', 'status');
-
-      const fotoStore = db.createObjectStore('fotos', {
-        keyPath: 'id',
-      });
-      fotoStore.createIndex('by-inspect', 'inspectId');
+      if (!db.objectStoreNames.contains('inspections')) {
+        const inspectionStore = db.createObjectStore('inspections', { keyPath: 'id' });
+        inspectionStore.createIndex('by-status', 'status');
+      }
+      if (!db.objectStoreNames.contains('fotos')) {
+        const fotoStore = db.createObjectStore('fotos', { keyPath: 'id' });
+        fotoStore.createIndex('by-inspect', 'inspectId');
+      }
     },
   });
 }
@@ -59,6 +58,11 @@ export async function getInspections() {
 export async function saveFoto(foto: InspectDB['fotos']['value']) {
   const db = await initDB();
   return db.put('fotos', foto);
+}
+
+export async function deleteFoto(id: string) {
+  const db = await initDB();
+  return db.delete('fotos', id);
 }
 
 export async function getFotosByInspection(inspectId: string) {
