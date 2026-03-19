@@ -75,12 +75,13 @@ export default function LandingPage() {
           </motion.div>
           
           <motion.h1 variants={itemVariants} className="text-7xl md:text-[140px] font-black tracking-[-0.07em] leading-[0.8] max-w-6xl">
-            Relatórios prontos <br/>
-            <span className="text-zinc-700 italic font-thin">no campo.</span>
+            Vistorie hoje. <br/>
+            <span className="text-zinc-700 italic font-thin">Fature hoje.</span>
           </motion.h1>
           
-          <motion.p variants={itemVariants} className="text-2xl text-zinc-500 max-w-2xl mx-auto font-medium leading-tight">
-            O Inspectify é o sistema definitivo para vistorias imobiliárias. Capture fotos, avalie e envie com um clique.
+          <motion.p variants={itemVariants} className="text-2xl text-zinc-500 max-w-3xl mx-auto font-medium leading-tight">
+            Relatórios de elite gerados antes mesmo de você fechar a porta do imóvel. 
+            Recupere suas noites e escale sua imobiliária com tecnologia offline-first.
           </motion.p>
           
           <motion.div variants={itemVariants} className="flex flex-col md:flex-row gap-8 justify-center pt-8">

@@ -4,11 +4,13 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ChevronLeft, Trash2, Loader2, CheckCircle } from 'lucide-react';
 import { getFotosByInspection, initDB, deleteFoto } from '@/lib/db';
+import { useToast } from '@/components/ToastProvider';
 
 function RevisaoContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get('id');
+  const { showToast } = useToast();
 
   const [vistoria, setVistoria] = useState<any>(null);
   const [fotos, setFotos] = useState<any[]>([]);
@@ -18,25 +20,35 @@ function RevisaoContent() {
   useEffect(() => {
     async function loadData() {
       if (!id) return;
-      const db = await initDB();
-      const v = await db.get('inspections', id);
-      const f = await getFotosByInspection(id);
-      setVistoria(v);
-      setFotos(f);
-      setLoading(false);
+      try {
+        const db = await initDB();
+        const v = await db.get('inspections', id);
+        const f = await getFotosByInspection(id);
+        setVistoria(v);
+        setFotos(f);
+      } catch (err) {
+        showToast("Erro ao carregar dados locais.", "error");
+      } finally {
+        setLoading(false);
+      }
     }
     loadData();
-  }, [id]);
+  }, [id, showToast]);
 
   const handleDelete = async (fotoId: string) => {
-    if (confirm("Deseja realmente excluir esta foto?")) {
+    try {
       await deleteFoto(fotoId);
       setFotos(fotos.filter(f => f.id !== fotoId));
+      showToast("Foto removida com sucesso.", "success");
+    } catch (err) {
+      showToast("Erro ao excluir foto.", "error");
     }
   };
 
   const handleSync = async () => {
+    if (!vistoria) return;
     setSyncing(true);
+    
     const payload = {
       inspectId: id,
       endereco: vistoria.endereco,
@@ -48,7 +60,8 @@ function RevisaoContent() {
     };
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      // URL DINÂMICA DEFINITIVA
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://backend-production-xxxx.up.railway.app';
       const res = await fetch(`${apiUrl}/vistoria/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -56,13 +69,13 @@ function RevisaoContent() {
       });
 
       if (res.ok) {
-        alert("Relatório sincronizado com sucesso!");
+        showToast("Relatório gerado com sucesso!", "success");
         router.push('/dashboard');
       } else {
-        alert("Erro no servidor ao gerar o relatório.");
+        showToast("O servidor encontrou um erro ao processar o PDF.", "error");
       }
     } catch (err) {
-      alert("Erro de conexão. Verifique se o servidor está online.");
+      showToast("Falha de conexão. Verifique se o servidor está online.", "error");
     } finally {
       setSyncing(false);
     }
@@ -78,7 +91,7 @@ function RevisaoContent() {
         </button>
         <div>
           <h1 className="text-2xl font-bold tracking-tight uppercase italic">Revisão de Inspeção</h1>
-          <p className="text-sm text-gray-500 font-mono">{vistoria?.endereco}</p>
+          <p className="text-sm text-zinc-500 font-mono">{vistoria?.endereco}</p>
         </div>
       </header>
 
@@ -93,13 +106,13 @@ function RevisaoContent() {
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Adicione observações técnicas..."
+                placeholder="Observações técnicas..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px]"
               />
               <div className="flex justify-between items-center pt-2">
-                <span className="text-[10px] text-gray-600 uppercase font-bold tracking-tighter">REF: {f.id}</span>
+                <span className="text-[10px] text-zinc-600 uppercase font-bold tracking-tighter">REF: {f.id}</span>
                 <button 
                   onClick={() => handleDelete(f.id)}
                   className="text-red-500/50 p-2 hover:text-red-500 transition-colors"
@@ -119,7 +132,7 @@ function RevisaoContent() {
           className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'SINCRONIZANDO...' : 'GERAR RELATÃ“RIO'}
+          {syncing ? 'Sincronizando...' : 'GERAR RELATÓRIO'}
         </button>
       </footer>
     </main>
@@ -128,7 +141,7 @@ function RevisaoContent() {
 
 export default function RevisaoPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">CARREGANDO DADOS...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">Carregando dados...</div>}>
       <RevisaoContent />
     </Suspense>
   );
