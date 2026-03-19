@@ -17,10 +17,7 @@ export default function LandingPage() {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
   const itemVariants = {
@@ -81,7 +78,7 @@ export default function LandingPage() {
           
           <motion.p variants={itemVariants} className="text-2xl text-zinc-500 max-w-3xl mx-auto font-medium leading-tight">
             Relatórios de elite gerados antes mesmo de você fechar a porta do imóvel. 
-            Recupere suas noites e escale sua imobiliária com tecnologia offline-first.
+            Recupere suas noites e escale sua produtividade.
           </motion.p>
           
           <motion.div variants={itemVariants} className="flex flex-col md:flex-row gap-8 justify-center pt-8">
@@ -147,7 +144,7 @@ export default function LandingPage() {
             <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full" />
             <img 
               src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" 
-              alt="Cansaço noturno" 
+              alt="Cansaço" 
               className="relative rounded-[2.5rem] border border-white/5 grayscale hover:grayscale-0 transition-all duration-700"
             />
           </div>
@@ -163,19 +160,18 @@ export default function LandingPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Bento Card 1 */}
             <div className="md:col-span-2 p-16 border border-white/5 bg-black rounded-[3rem] flex flex-col justify-between group hover:border-white/20 transition-all relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                <CloudOff size={200} />
+              </div>
               <div className="space-y-8 z-10">
-                <div className="w-16 h-16 bg-white text-black flex items-center justify-center rounded-2xl">
+                <div className="w-14 h-14 bg-white text-black flex items-center justify-center rounded-2xl">
                   <CloudOff size={32} />
                 </div>
                 <h3 className="text-5xl font-black tracking-tighter uppercase">100% Offline</h3>
                 <p className="text-2xl text-zinc-500 max-w-md leading-relaxed">Vistorie em elevadores, subsolos ou fazendas. O Inspectify salva tudo localmente e sincroniza quando o sinal volta.</p>
               </div>
-              <img 
-                src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=600" 
-                className="absolute right-0 bottom-0 w-1/2 opacity-20 group-hover:opacity-40 transition-opacity" 
-                alt="Prédio" 
-              />
             </div>
             
             <div className="p-16 border border-white/5 bg-black rounded-[3rem] flex flex-col justify-between group hover:border-white/20 transition-all">
@@ -183,8 +179,8 @@ export default function LandingPage() {
                 <div className="w-16 h-16 bg-white text-black flex items-center justify-center rounded-2xl font-black">
                   <FileText size={32} />
                 </div>
-                <h3 className="text-4xl font-black tracking-tighter uppercase leading-none">PDF InstantÃ¢neo</h3>
-                <p className="text-xl text-zinc-500 font-medium">Relatórios profissionais gerados no ato.</p>
+                <h3 className="text-4xl font-black tracking-tighter uppercase leading-none">Relatórios no Ato</h3>
+                <p className="text-xl text-zinc-500 font-medium">PDFs profissionais gerados em segundos.</p>
               </div>
             </div>
 
@@ -275,7 +271,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- 7. CTA FINAL --- */}
+      {/* --- CTA FINAL --- */}
       <section className="py-40 px-6 text-center">
         <motion.div {...fadeInUp} className="max-w-5xl mx-auto space-y-12">
           <h2 className="text-6xl md:text-[100px] font-bold tracking-[-0.06em] leading-tight">A escala começa agora.</h2>

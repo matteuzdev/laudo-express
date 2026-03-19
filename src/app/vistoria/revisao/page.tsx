@@ -55,13 +55,17 @@ function RevisaoContent() {
       cliente: vistoria.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
-        nota: f.comentario || 'Sem observacoes'
+        nota: f.comentario || 'Sem observações'
       }))
     };
 
     try {
-      // TENTATIVA DE CONEXAO INTELIGENTE
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      // URL DINÂMICA: SE ESTIVER NA NUVEM, USA O BACKEND DA RAILWAY
+      const isLocal = window.location.hostname === 'localhost';
+      const apiUrl = isLocal 
+        ? 'http://localhost:8000' 
+        : 'https://laudo-express-production.up.railway.app'; // Ajuste aqui se a URL do seu backend for diferente
+
       console.log("Tentando sincronizar com:", apiUrl);
 
       const res = await fetch(`${apiUrl}/vistoria/sync`, {
@@ -71,14 +75,14 @@ function RevisaoContent() {
       });
 
       if (res.ok) {
-        showToast("Relatorio gerado com sucesso!", "success");
+        showToast("Relatório gerado com sucesso!", "success");
         router.push('/dashboard');
       } else {
-        showToast("O servidor recusou a geracao do PDF.", "error");
+        showToast("O servidor recusou a geração do PDF.", "error");
       }
     } catch (err) {
       console.error("Erro de Fetch:", err);
-      showToast("Falha de conexao com o servidor.", "error");
+      showToast("Falha de conexão com o servidor.", "error");
     } finally {
       setSyncing(false);
     }
@@ -93,7 +97,7 @@ function RevisaoContent() {
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight uppercase italic">Revisao de Inspecao</h1>
+          <h1 className="text-2xl font-bold tracking-tight uppercase italic text-white">Revisão de Inspeção</h1>
           <p className="text-sm text-zinc-500 font-mono">{vistoria?.endereco}</p>
         </div>
       </header>
@@ -109,10 +113,10 @@ function RevisaoContent() {
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Observacoes tecnicas..."
+                placeholder="Observações técnicas..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px]"
+                className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px] text-white"
               />
               <div className="flex justify-between items-center pt-2">
                 <span className="text-[10px] text-zinc-600 uppercase font-bold tracking-tighter">REF: {f.id}</span>
@@ -135,7 +139,7 @@ function RevisaoContent() {
           className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'Sincronizando...' : 'GERAR RELATORIO'}
+          {syncing ? 'Sincronizando...' : 'GERAR RELATÓRIO'}
         </button>
       </footer>
     </main>
@@ -144,7 +148,7 @@ function RevisaoContent() {
 
 export default function RevisaoPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">Carregando dados...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">CARREGANDO DADOS...</div>}>
       <RevisaoContent />
     </Suspense>
   );
