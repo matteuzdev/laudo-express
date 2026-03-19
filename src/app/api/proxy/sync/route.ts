@@ -4,11 +4,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
-    // Tenta falar com o backend internamente (Railway) ou localmente
+    // Na Railway, você deve configurar a variável BACKEND_URL com a URL do seu backend python
+    // Ex: https://inspectify-backend.up.railway.app
     const BACKEND_SERVICE_URL = process.env.BACKEND_URL || 'http://localhost:8000';
     const targetUrl = `${BACKEND_SERVICE_URL}/vistoria/sync`;
-
-    console.log(`[PROXY] Redirecionando para: ${targetUrl}`);
 
     const res = await fetch(targetUrl, {
       method: 'POST',
@@ -19,7 +18,6 @@ export async function POST(request: Request) {
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch (error) {
-    console.error('[PROXY_ERROR]', error);
-    return NextResponse.json({ detail: "Erro na ponte de comunicacao com o Backend." }, { status: 500 });
+    return NextResponse.json({ detail: "Erro na ponte de rede entre frontend e backend" }, { status: 500 });
   }
 }

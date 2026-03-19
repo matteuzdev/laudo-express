@@ -36,9 +36,9 @@ function RevisaoContent() {
   }, [id, showToast]);
 
   const handleDelete = async (fotoId: string) => {
-    if (confirm("Deseja excluir?")) {
+    if (confirm("Deseja excluir esta foto?")) {
       await deleteFoto(fotoId);
-      setFotos(fotos.filter(f => f.id !== fotoId));
+      setFotos((prev) => prev.filter(f => f.id !== fotoId));
       showToast("Foto removida.", "success");
     }
   };
@@ -53,12 +53,12 @@ function RevisaoContent() {
       cliente: vistoria.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
-        nota: f.comentario || 'Sem observacoes'
+        nota: f.comentario || 'Sem observações'
       }))
     };
 
     try {
-      // AGORA CHAMA A PONTE INTERNA (PROXY) - SEM ERRO DE URL
+      // Chama a ponte interna para não dar erro de localhost
       const res = await fetch('/api/proxy/sync', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,35 +66,35 @@ function RevisaoContent() {
       });
 
       if (res.ok) {
-        showToast("Relatorio gerado!", "success");
+        showToast("Relatório gerado com sucesso!", "success");
         router.push('/dashboard');
       } else {
-        showToast("Erro no processamento do servidor.", "error");
+        showToast("Erro no servidor ao processar o relatório.", "error");
       }
     } catch (err) {
-      showToast("Falha critica de rede.", "error");
+      showToast("Falha de conexão com o servidor.", "error");
     } finally {
       setSyncing(false);
     }
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-black text-white font-black">CARREGANDO...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-black text-white font-black uppercase tracking-tighter animate-pulse">Carregando...</div>;
 
   return (
     <main className="min-h-screen bg-black text-white p-6 space-y-8 pb-32">
       <header className="flex items-center gap-4">
-        <button onClick={() => router.back()} className="p-2 bg-white/5 border border-white/10 rounded-full">
+        <button onClick={() => router.back()} className="p-2 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors">
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-black uppercase italic tracking-tighter">Revisao da Inspecao</h1>
+          <h1 className="text-2xl font-black uppercase italic tracking-tighter">Revisão de Inspeção</h1>
           <p className="text-sm text-zinc-500 font-mono">{vistoria?.endereco}</p>
         </div>
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {fotos.map((f) => (
-          <div key={f.id} className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex flex-col">
+          <div key={f.id} className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex flex-col group transition-all hover:border-white/20">
             <div className="relative aspect-video">
               <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Inspeção" />
               <div className="absolute top-3 left-3 px-3 py-1 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest">
@@ -103,14 +103,17 @@ function RevisaoContent() {
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Notas tecnicas..."
+                placeholder="Notas técnicas..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px] text-white"
               />
               <div className="flex justify-between items-center pt-2">
-                <span className="text-[10px] text-zinc-600 font-black tracking-widest">REF: {f.id}</span>
-                <button onClick={() => handleDelete(f.id)} className="text-red-500/50 p-2 hover:text-red-500 transition-colors">
+                <span className="text-[10px] text-zinc-600 font-black tracking-widest uppercase italic">Referência: {f.id}</span>
+                <button 
+                  onClick={() => handleDelete(f.id)}
+                  className="text-red-500/50 p-2 hover:text-red-500 transition-colors"
+                >
                   <Trash2 size={18} />
                 </button>
               </div>
@@ -119,14 +122,14 @@ function RevisaoContent() {
         ))}
       </section>
 
-      <footer className="fixed bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black to-transparent flex justify-center z-50 pointer-events-none">
+      <footer className="fixed bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/80 to-transparent flex justify-center z-50">
         <button 
           onClick={handleSync}
           disabled={syncing}
-          className="pointer-events-auto bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
+          className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'SINCRONIZANDO...' : 'GERAR RELATORIO'}
+          {syncing ? 'Sincronizando...' : 'GERAR RELATÓRIO'}
         </button>
       </footer>
     </main>
