@@ -27,7 +27,7 @@ function RevisaoContent() {
         setVistoria(v);
         setFotos(f);
       } catch (err) {
-        showToast("Erro ao carregar dados locais.", "error");
+        showToast("Erro ao carregar dados.", "error");
       } finally {
         setLoading(false);
       }
@@ -36,12 +36,10 @@ function RevisaoContent() {
   }, [id, showToast]);
 
   const handleDelete = async (fotoId: string) => {
-    try {
+    if (confirm("Deseja excluir?")) {
       await deleteFoto(fotoId);
       setFotos(fotos.filter(f => f.id !== fotoId));
-      showToast("Foto removida com sucesso.", "success");
-    } catch (err) {
-      showToast("Erro ao excluir foto.", "error");
+      showToast("Foto removida.", "success");
     }
   };
 
@@ -55,40 +53,32 @@ function RevisaoContent() {
       cliente: vistoria.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
-        nota: f.comentario || 'Sem observações'
+        nota: f.comentario || 'Sem observacoes'
       }))
     };
 
     try {
-      // URL DINÂMICA: SE ESTIVER NA NUVEM, USA O BACKEND DA RAILWAY
-      const isLocal = window.location.hostname === 'localhost';
-      const apiUrl = isLocal 
-        ? 'http://localhost:8000' 
-        : 'https://laudo-express-production.up.railway.app'; // Ajuste aqui se a URL do seu backend for diferente
-
-      console.log("Tentando sincronizar com:", apiUrl);
-
-      const res = await fetch(`${apiUrl}/vistoria/sync`, {
+      // AGORA CHAMA A PONTE INTERNA (PROXY) - SEM ERRO DE URL
+      const res = await fetch('/api/proxy/sync', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
       if (res.ok) {
-        showToast("Relatório gerado com sucesso!", "success");
+        showToast("Relatorio gerado!", "success");
         router.push('/dashboard');
       } else {
-        showToast("O servidor recusou a geração do PDF.", "error");
+        showToast("Erro no processamento do servidor.", "error");
       }
     } catch (err) {
-      console.error("Erro de Fetch:", err);
-      showToast("Falha de conexão com o servidor.", "error");
+      showToast("Falha critica de rede.", "error");
     } finally {
       setSyncing(false);
     }
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-black text-white"><Loader2 className="animate-spin" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-black text-white font-black">CARREGANDO...</div>;
 
   return (
     <main className="min-h-screen bg-black text-white p-6 space-y-8 pb-32">
@@ -97,33 +87,30 @@ function RevisaoContent() {
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight uppercase italic text-white">Revisão de Inspeção</h1>
+          <h1 className="text-2xl font-black uppercase italic tracking-tighter">Revisao da Inspecao</h1>
           <p className="text-sm text-zinc-500 font-mono">{vistoria?.endereco}</p>
         </div>
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {fotos.map((f) => (
-          <div key={f.id} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden flex flex-col group">
+          <div key={f.id} className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex flex-col">
             <div className="relative aspect-video">
-              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Foto" />
+              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Inspeção" />
               <div className="absolute top-3 left-3 px-3 py-1 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest">
                 {f.comodo}
               </div>
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Observações técnicas..."
+                placeholder="Notas tecnicas..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px] text-white"
               />
               <div className="flex justify-between items-center pt-2">
-                <span className="text-[10px] text-zinc-600 uppercase font-bold tracking-tighter">REF: {f.id}</span>
-                <button 
-                  onClick={() => handleDelete(f.id)}
-                  className="text-red-500/50 p-2 hover:text-red-500 transition-colors"
-                >
+                <span className="text-[10px] text-zinc-600 font-black tracking-widest">REF: {f.id}</span>
+                <button onClick={() => handleDelete(f.id)} className="text-red-500/50 p-2 hover:text-red-500 transition-colors">
                   <Trash2 size={18} />
                 </button>
               </div>
@@ -132,14 +119,14 @@ function RevisaoContent() {
         ))}
       </section>
 
-      <footer className="fixed bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/80 to-transparent flex justify-center z-50">
+      <footer className="fixed bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black to-transparent flex justify-center z-50 pointer-events-none">
         <button 
           onClick={handleSync}
           disabled={syncing}
-          className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
+          className="pointer-events-auto bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'Sincronizando...' : 'GERAR RELATÓRIO'}
+          {syncing ? 'SINCRONIZANDO...' : 'GERAR RELATORIO'}
         </button>
       </footer>
     </main>
@@ -148,7 +135,7 @@ function RevisaoContent() {
 
 export default function RevisaoPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">CARREGANDO DADOS...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter uppercase">Processando Dados...</div>}>
       <RevisaoContent />
     </Suspense>
   );
