@@ -20,51 +20,67 @@ app.add_middleware(
 class SyncFoto(BaseModel):
     comodo: str
     nota: str
+    url: Optional[str] = None # Para suportar fotos reais futuramente
 
 class SyncPayload(BaseModel):
-    InspeçãoId: str
+    inspectId: str
     endereco: str
     cliente: str
     fotos: List[SyncFoto]
 
 @app.get("/")
 async def root():
-    return {"status": "online", "message": "ImpÃ©rio Konig: Inspectify API"}
+    return {"status": "online", "message": "Imperio Konig: Inspectify API"}
 
 @app.post("/auth/magic-link")
 async def send_magic_link(email: str):
     token = create_magic_link_token(email)
-    login_url = f"http://localhost:3000/login/verify?token={token}"
-    print(f"\nðŸ“§ LINK DE ACESSO: {login_url}\n")
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    login_url = f"{frontend_url}/login/verify?token={token}"
+    
+    # Nota: O servico de email deve ser chamado aqui
+    print(f"\n[AUTH] Link gerado para {email}: {login_url}\n")
     return {"message": "Link de acesso gerado com sucesso!"}
 
-@app.get("/auth/verify")
-async def verify_token(token: str):
-    email = verify_magic_link_token(token)
-    if not email:
-        raise HTTPException(status_code=401, detail="Link invÃ¡lido ou expirado.")
-    return {"email": email, "status": "authenticated"}
+@app.post("/vistoria/sync")
+async def sync_inspection(payload: SyncPayload):
+    """
+    Endpoint principal de sincronizacao e geracao de relatorios.
+    """
+    print(f"[*] Recebendo dados da Inspecao: {payload.inspectId}")
+    
+    output_dir = "laudos"
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, f"relatorio_{payload.inspectId}.pdf")
+    
+    try:
+        generator = InspectGenerator(output_path)
+        dados = {
+            "endereco": payload.endereco,
+            "cliente": payload.cliente,
+            "data": "18/03/2026",
+            "inspetor": "Soberano Hianto"
+        }
+        
+        # Converte o payload de fotos para o formato do gerador
+        fotos_processadas = []
+        for f in payload.fotos:
+            fotos_processadas.append({
+                "path": "public/placeholder.png", # Placeholder enquanto o upload real nao e ativado
+                "comodo": f.comodo,
+                "nota": f.nota
+            })
+            
+        generator.generate(dados, fotos_processadas)
+        
+        return {
+            "status": "success", 
+            "message": "Relatorio gerado com sucesso!",
+            "pdf_url": output_path
+        }
+    except Exception as e:
+        print(f"[ERROR] Falha ao gerar PDF: {e}")
+        raise HTTPException(status_code=500, detail="Erro interno ao processar o relatÃ³rio.")
 
-@app.post("/Inspeção/sync")
-async def sync_Inspeção(payload: SyncPayload):
-    # 1. LÃ³gica de SincronizaÃ§Ã£o (Em prod, salvarÃ­amos no Postgres e as fotos no S3/Storage)
-    print(f"ðŸ“¦ Sincronizando Inspeção: {payload.InspeçãoId} - {payload.endereco}")
-    
-    # 2. Disparar Gerador de PDF (SimulaÃ§Ã£o com ReportLab)
-    output_pdf = f"laudos/laudo_{payload.InspeçãoId}.pdf"
-    os.makedirs("laudos", exist_ok=True)
-    
-    generator = InspectGenerator(output_pdf)
-    dados = {
-        "endereco": payload.endereco,
-        "cliente": payload.cliente,
-        "data": "18/03/2026", # Em prod pegaria do banco
-        "inspetor": "Soberano Hianto"
-    }
-    
-    # Nota: Em prod, baixarÃ­amos as fotos reais do Storage aqui
-    # Por enquanto, passamos uma lista vazia ou com placeholders
-    generator.generate(dados, []) 
-    
-    return {"message": "SincronizaÃ§Ã£o concluÃ­da!", "pdf_url": output_pdf}
-
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
