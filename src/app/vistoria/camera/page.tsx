@@ -25,7 +25,7 @@ function CameraContent() {
         setStream(mediaStream);
         if (videoRef.current) videoRef.current.srcObject = mediaStream;
       } catch (err) {
-        console.error("Erro ao acessar camera:", err);
+        console.error("Erro ao acessar câmera:", err);
       }
     }
     startCamera();

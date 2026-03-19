@@ -193,7 +193,7 @@ export default function LandingPage() {
                 <div className="w-16 h-16 bg-white text-black flex items-center justify-center rounded-2xl font-black">
                   <FileText size={32} />
                 </div>
-                <h3 className="text-4xl font-black tracking-tighter uppercase leading-none">PDF Instantâneo</h3>
+                <h3 className="text-4xl font-black tracking-tighter uppercase leading-none">PDF InstantÃ¢neo</h3>
                 <p className="text-xl text-zinc-500 font-medium">Relatórios profissionais gerados no ato.</p>
               </div>
             </div>

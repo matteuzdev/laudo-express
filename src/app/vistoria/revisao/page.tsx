@@ -43,12 +43,11 @@ function RevisaoContent() {
       cliente: vistoria.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
-        nota: f.comentario || 'Sem observaÃ§Ãµes'
+        nota: f.comentario || 'Sem observações'
       }))
     };
 
     try {
-      // URL DINÃ‚MICA: Usa a variÃ¡vel de ambiente se existir, senÃ£o usa localhost
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/vistoria/sync`, {
         method: 'POST',
@@ -57,13 +56,13 @@ function RevisaoContent() {
       });
 
       if (res.ok) {
-        alert("RelatÃ³rio sincronizado com sucesso!");
+        alert("Relatório sincronizado com sucesso!");
         router.push('/dashboard');
       } else {
-        alert("Erro no servidor ao gerar o relatÃ³rio.");
+        alert("Erro no servidor ao gerar o relatório.");
       }
     } catch (err) {
-      alert("Erro de conexÃ£o. Verifique se o servidor estÃ¡ online.");
+      alert("Erro de conexão. Verifique se o servidor está online.");
     } finally {
       setSyncing(false);
     }
@@ -78,7 +77,7 @@ function RevisaoContent() {
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight uppercase">RevisÃ£o de InspeÃ§Ã£o</h1>
+          <h1 className="text-2xl font-bold tracking-tight uppercase italic">Revisão de Inspeção</h1>
           <p className="text-sm text-gray-500 font-mono">{vistoria?.endereco}</p>
         </div>
       </header>
@@ -87,14 +86,14 @@ function RevisaoContent() {
         {fotos.map((f) => (
           <div key={f.id} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden flex flex-col group">
             <div className="relative aspect-video">
-              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="InspeÃ§Ã£o" />
+              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Inspeção" />
               <div className="absolute top-3 left-3 px-3 py-1 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest">
                 {f.comodo}
               </div>
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Adicione observaÃ§Ãµes..."
+                placeholder="Adicione observações técnicas..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px]"
@@ -120,7 +119,7 @@ function RevisaoContent() {
           className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'Sincronizando...' : 'Gerar RelatÃ³rio'}
+          {syncing ? 'SINCRONIZANDO...' : 'GERAR RELATÓRIO'}
         </button>
       </footer>
     </main>
@@ -129,7 +128,7 @@ function RevisaoContent() {
 
 export default function RevisaoPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">Carregando dados...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white font-black tracking-tighter">CARREGANDO DADOS...</div>}>
       <RevisaoContent />
     </Suspense>
   );

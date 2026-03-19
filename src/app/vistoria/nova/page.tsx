@@ -35,20 +35,20 @@ function NovaContent() {
             <ChevronLeft size={20} />
           </button>
           <div>
-            <h1 className="text-4xl font-black tracking-tighter italic uppercase">Nova Inspecao</h1>
-            <p className="text-gray-500 font-medium text-sm">Registre os dados do imovel para iniciar.</p>
+            <h1 className="text-4xl font-black tracking-tighter italic uppercase">Nova Inspeção</h1>
+            <p className="text-gray-500 font-medium text-sm">Registre os dados do imóvel para iniciar.</p>
           </div>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="space-y-6">
             <div className="space-y-3">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Localizacao do Ativo</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Localização do Ativo</label>
               <div className="relative">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
                 <input
                   required
-                  placeholder="Endereco completo..."
+                  placeholder="Endereço completo..."
                   value={formData.endereco}
                   onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-white outline-none transition-all placeholder:text-gray-700"
@@ -57,12 +57,12 @@ function NovaContent() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Identificacao do Cliente</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Identificação do Cliente</label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
                 <input
                   required
-                  placeholder="Nome do Cliente ou Imobiliaria..."
+                  placeholder="Nome do Cliente ou Imobiliária..."
                   value={formData.cliente}
                   onChange={(e) => setFormData({ ...formData, cliente: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-white outline-none transition-all placeholder:text-gray-700"

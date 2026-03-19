@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Inspectify | RelatÃ³rios de InspeÃ§Ã£o',
-  description: 'Sistema profissional de vistorias imobiliÃ¡rias offline-first.',
+  title: 'Inspectify | Relatórios de Inspeção',
+  description: 'Sistema profissional de vistorias imobiliárias offline-first.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
