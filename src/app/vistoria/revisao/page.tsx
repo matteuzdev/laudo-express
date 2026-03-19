@@ -119,7 +119,7 @@ function RevisaoContent() {
           className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'SINCRONIZANDO...' : 'GERAR RELATÓRIO'}
+          {syncing ? 'SINCRONIZANDO...' : 'GERAR RELATÃ“RIO'}
         </button>
       </footer>
     </main>
