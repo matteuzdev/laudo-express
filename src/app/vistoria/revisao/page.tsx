@@ -55,13 +55,15 @@ function RevisaoContent() {
       cliente: vistoria.cliente,
       fotos: fotos.map(f => ({
         comodo: f.comodo,
-        nota: f.comentario || 'Sem observações'
+        nota: f.comentario || 'Sem observacoes'
       }))
     };
 
     try {
-      // URL DINÂMICA DEFINITIVA
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://backend-production-xxxx.up.railway.app';
+      // TENTATIVA DE CONEXAO INTELIGENTE
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      console.log("Tentando sincronizar com:", apiUrl);
+
       const res = await fetch(`${apiUrl}/vistoria/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -69,13 +71,14 @@ function RevisaoContent() {
       });
 
       if (res.ok) {
-        showToast("Relatório gerado com sucesso!", "success");
+        showToast("Relatorio gerado com sucesso!", "success");
         router.push('/dashboard');
       } else {
-        showToast("O servidor encontrou um erro ao processar o PDF.", "error");
+        showToast("O servidor recusou a geracao do PDF.", "error");
       }
     } catch (err) {
-      showToast("Falha de conexão. Verifique se o servidor está online.", "error");
+      console.error("Erro de Fetch:", err);
+      showToast("Falha de conexao com o servidor.", "error");
     } finally {
       setSyncing(false);
     }
@@ -90,7 +93,7 @@ function RevisaoContent() {
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight uppercase italic">Revisão de Inspeção</h1>
+          <h1 className="text-2xl font-bold tracking-tight uppercase italic">Revisao de Inspecao</h1>
           <p className="text-sm text-zinc-500 font-mono">{vistoria?.endereco}</p>
         </div>
       </header>
@@ -99,14 +102,14 @@ function RevisaoContent() {
         {fotos.map((f) => (
           <div key={f.id} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden flex flex-col group">
             <div className="relative aspect-video">
-              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Inspeção" />
+              <img src={URL.createObjectURL(f.blob)} className="w-full h-full object-cover" alt="Foto" />
               <div className="absolute top-3 left-3 px-3 py-1 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest">
                 {f.comodo}
               </div>
             </div>
             <div className="p-4 space-y-3 flex-1 flex flex-col">
               <textarea
-                placeholder="Observações técnicas..."
+                placeholder="Observacoes tecnicas..."
                 defaultValue={f.comentario}
                 onBlur={(e) => { f.comentario = e.target.value }}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:border-white outline-none resize-none min-h-[100px]"
@@ -132,7 +135,7 @@ function RevisaoContent() {
           className="bg-white text-black px-16 py-5 rounded-full font-black text-xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all shadow-[0_0_60px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {syncing ? <Loader2 className="animate-spin" size={24} /> : <CheckCircle size={24} />}
-          {syncing ? 'Sincronizando...' : 'GERAR RELATÓRIO'}
+          {syncing ? 'Sincronizando...' : 'GERAR RELATORIO'}
         </button>
       </footer>
     </main>
